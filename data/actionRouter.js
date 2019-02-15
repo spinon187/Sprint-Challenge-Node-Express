@@ -43,7 +43,7 @@ actionRouter.post('/', (req, res) => {
 
     Actions.insert(taggedAction)
         .then(taggedAction =>{
-            if (taggedAction.text) {
+            if (taggedAction.description && taggedAction.notes) {
                 Actions.get(taggedAction.id).then(taggedAction =>
                 res.status(201).json({taggedAction}))
             }
@@ -85,7 +85,7 @@ actionRouter.put('/:id', (req, res) =>{
                 res.status(400).json({error: "Please provide new description and notes for the action."})
             }
             else if(updated) {
-                Actions.getById(id).then(action =>
+                Actions.get(id).then(action =>
                     res.status(200).json({action}));
             } else {
                 res.status(404).json({error: "The action with the specified ID does not exist."})

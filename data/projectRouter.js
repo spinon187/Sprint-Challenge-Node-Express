@@ -39,14 +39,15 @@ projectRouter.post('/', (req, res) => {
 
     Projects.insert(project)
         .then(project =>{
-            if (project.name || project.description) {
-                project.get(project.id).then(project =>
-                res.status(201).json({project}))}
-            else {
+            if (project.name === undefined || project.description === undefined) {
                 res.status(400).json({error: "Please provide a name for the project."})
             }
-        }
-        )
+            else {
+                Projects.get(project.id).then(project =>
+                    res.status(201).json({project}))
+            }
+
+        })
         .catch(() => {
             res.status(500).json({error: "There was an error while saving the project to the database"})
         })
